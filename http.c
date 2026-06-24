@@ -4679,7 +4679,9 @@ evhttp_get_request_connection(
 		goto err;
 	if (bufferevent_disable(evcon->bufev, EV_WRITE))
 		goto err;
-	bufferevent_socket_set_conn_address_(evcon->bufev, sa, salen);
+	if (bufferevent_socket_set_conn_address_(evcon->bufev, sa, salen)) {
+		goto err;
+	}
 
 	return (evcon);
 
