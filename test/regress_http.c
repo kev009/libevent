@@ -6220,6 +6220,7 @@ struct testcase_t http_testcases[] = {
 	HTTP(terminate_chunked_oneshot),
 	HTTP(on_complete),
 	HTTP(ws),
+	HTTP(ws_msg_limit),
 
 	HTTP(highport),
 	HTTP(dispatcher),
