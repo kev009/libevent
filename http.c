@@ -1955,13 +1955,11 @@ evhttp_header_is_valid_value(const char *value)
 {
 	const char *p = value;
 
-	while ((p = strpbrk(p, "\r\n")) != NULL) {
-		/* we really expect only one new line */
-		p += strspn(p, "\r\n");
-		/* we expect a space or tab for continuation */
-		if (*p != ' ' && *p != '\t')
-			return (0);
+	if (strpbrk(p, "\r\n") != NULL) {
+		/* Reject any header containing CR or LF. */
+		return (0);
 	}
+
 	return (1);
 }
 
