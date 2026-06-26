@@ -3961,6 +3961,43 @@ http_multi_line_header_test(void *arg)
 }
 
 static void
+http_is_chunked_test(void *arg)
+{
+	(void) arg;
+	tt_assert(evhttp_str_is_chunked_("chunked", NULL));
+	tt_assert(evhttp_str_is_chunked_("chUNKED", NULL));
+	tt_assert(evhttp_str_is_chunked_("  CHUNKED  ", NULL));
+	tt_assert(evhttp_str_is_chunked_(" chUNKED ; foo=bar", NULL));
+	tt_assert(evhttp_str_is_chunked_("chUNKED ; foo=bar", NULL));
+
+	tt_assert(! evhttp_str_is_chunked_("wombat", NULL));
+	tt_assert(! evhttp_str_is_chunked_("chunked+", NULL));
+	tt_assert(! evhttp_str_is_chunked_("wombchunkedat", NULL));
+	tt_assert(! evhttp_str_is_chunked_("wombat chunked", NULL));
+	tt_assert(! evhttp_str_is_chunked_("wombat; chunked=foo", NULL));
+end:
+	;
+}
+
+static void
+http_check_transfer_encoding_test(void *arg)
+{
+#define CH evhttp_check_transfer_encoding_
+	tt_int_op(CH("hello"), ==, TE_NO_CHUNKED);
+	tt_int_op(CH("hello, world"), ==, TE_NO_CHUNKED);
+	tt_int_op(CH("hello, world, chunked"), ==, TE_ENDS_IN_CHUNKED);
+	tt_int_op(CH("chunked  "), ==, TE_ENDS_IN_CHUNKED);
+	tt_int_op(CH("    ,  chunked  "), ==, TE_ENDS_IN_CHUNKED);
+	tt_int_op(CH("chunked , gzip"), ==, TE_INVALID);
+	tt_int_op(CH("foo, chunked , gzip"), ==, TE_INVALID);
+	tt_int_op(CH("    ,  chunked, "), ==, TE_INVALID);
+end:
+	;
+#undef CH
+}
+
+
+static void
 http_request_bad(struct evhttp_request *req, void *arg)
 {
 	if (req != NULL) {
@@ -4748,6 +4785,8 @@ struct testcase_t http_testcases[] = {
 	HTTP(highport),
 	HTTP(dispatcher),
 	HTTP(multi_line_header),
+	HTTP(is_chunked),
+	HTTP(check_transfer_encoding),
 	HTTP(negative_content_length),
 	HTTP(chunk_out),
 	HTTP(stream_out),
