@@ -925,7 +925,7 @@ evhttp_handle_chunked_read(struct evhttp_request *req, struct evbuffer *buf)
 		if (req->ntoread < 0) {
 			/* Read chunk size */
 			ev_int64_t ntoread;
-			char *p = evbuffer_readln(buf, NULL, EVBUFFER_EOL_CRLF);
+			char *p = evbuffer_readln(buf, NULL, EVBUFFER_EOL_CRLF_STRICT);
 			char *endp;
 			int error;
 			if (p == NULL)
