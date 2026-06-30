@@ -195,7 +195,9 @@ enum evhttp_transfer_encoding_header_status {
 	/* This Transfer-Encoding line was valid and did not contain "chunked" */
 	TE_NO_CHUNKED,
 };
+EVENT2_EXPORT_SYMBOL
 int evhttp_str_is_chunked_(const char *value, const char *eos);
+EVENT2_EXPORT_SYMBOL
 enum evhttp_transfer_encoding_header_status
 evhttp_check_transfer_encoding_(const char *value);
 
