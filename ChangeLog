@@ -1,13 +1,13 @@
-Changes in version 2.1.13-stable (30 June 2026)
+Changes in version 2.1.13-stable (01 July 2026)
 
  This release contains several security fixes, affecting users of the
  following modules: evbuffer, bufferevent, evtag, evrpc, evdns, evhttp.
  If you have a program that uses one of those modules,
- or if you distribute distribute libevent, you should upgrade.
+ or if you distribute libevent, you should upgrade.
 
- Additionally, this release makes backports some small modernizations to
+ Additionally, this release backports some small modernizations to
  the libevent codebase, to aid in compiling with the compilers
- released over the last few year.
+ released over the last few years.
 
  Security Fixes (evtag, evrpc):
  - Fix an out-of-bounds read in decode_tag_internal.
