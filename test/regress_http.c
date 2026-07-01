@@ -3982,7 +3982,8 @@ end:
 static void
 http_check_transfer_encoding_test(void *arg)
 {
-#define CH evhttp_check_transfer_encoding_
+	enum evhttp_transfer_encoding_header_status status;
+#define CH(s) (status = evhttp_check_transfer_encoding_(s))
 	tt_int_op(CH("hello"), ==, TE_NO_CHUNKED);
 	tt_int_op(CH("hello, world"), ==, TE_NO_CHUNKED);
 	tt_int_op(CH("hello, world, chunked"), ==, TE_ENDS_IN_CHUNKED);
